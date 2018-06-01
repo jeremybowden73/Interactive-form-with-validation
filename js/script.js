@@ -6,3 +6,9 @@ const hideIfJavaScriptEnabled = document.getElementsByClassName(
 Array.prototype.forEach.call(hideIfJavaScriptEnabled, function(eachElement) {
   eachElement.style.display = "none";
 });
+
+// on page load, set focus on the first text field
+const initialFocus = document.getElementById("name");
+initialFocus.focus();
+
+//
