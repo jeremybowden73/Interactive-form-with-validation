@@ -32,6 +32,9 @@ jobTitle.addEventListener("change", e => {
 // initially hide "color" label and menu
 let shirtColors = document.getElementById("colors-js-puns");
 shirtColors.classList.add("is-hidden");
+let colors = document.getElementById("color"); // select the <select> element with id="color"
+let colorsChildren = colors.children;
+let defaultColor;
 //
 let theme = document.getElementById("design"); // select the <select> element with id="design"
 let re = new RegExp("");
@@ -39,21 +42,20 @@ theme.addEventListener("change", e => {
   let themeSelected = e.target.value;
   if (themeSelected === "js puns") {
     re = /puns/i;
-    console.log(re);
-    shirtColors.classList.remove("is-hidden");
+    defaultColor = colorsChildren[0];
+    defaultColor.selected = true;
     setShirtColors(re);
   } else if (themeSelected === "heart js") {
     re = /JS shirt/i;
-    console.log(re);
-    shirtColors.classList.remove("is-hidden");
+    defaultColor = colorsChildren[3];
+    defaultColor.selected = true;
     setShirtColors(re);
   } else {
-    shirtColors.classList.add("is-hidden"); // re-hide the "color" menu and label
+    shirtColors.classList.add("is-hidden"); // re-hide the "color" label and menu
   }
   //
   function setShirtColors(regex) {
-    let colors = document.getElementById("color"); // select the <select> element with id="color"
-    let colorsChildren = colors.children;
+    shirtColors.classList.remove("is-hidden");
     for (let i = 0; i < colorsChildren.length; i++) {
       colorsChildren[i].classList.remove("is-hidden");
       let childText = colorsChildren[i].text;
