@@ -1,9 +1,8 @@
-//
-const otherJobRoleInput = document.getElementById("otherJobRole");
-otherJobRoleInput.style.display = "none";
-const creditCardInputDiv = document.getElementById("credit-card");
-creditCardInputDiv.style.display = "none";
-const paypalDiv = document.getElementById("paypal");
-paypalDiv.style.display = "none";
-const bitcoinDiv = document.getElementById("bitcoin");
-bitcoinDiv.style.display = "none";
+// select all elements with class="hideIfJavaScriptEnabled"
+const hideIfJavaScriptEnabled = document.getElementsByClassName(
+  "hideIfJavaScriptEnabled"
+);
+// hide them all by setting display to "none"
+Array.prototype.forEach.call(hideIfJavaScriptEnabled, function(eachElement) {
+  eachElement.style.display = "none";
+});
