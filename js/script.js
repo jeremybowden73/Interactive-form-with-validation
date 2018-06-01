@@ -34,7 +34,7 @@ let shirtColors = document.getElementById("colors-js-puns");
 shirtColors.classList.add("is-hidden");
 let colors = document.getElementById("color"); // select the <select> element with id="color"
 let colorsChildren = colors.children;
-let defaultColor;
+let defaultColor; // for the shirt color dropdown
 //
 let theme = document.getElementById("design"); // select the <select> element with id="design"
 let re = new RegExp("");
@@ -43,19 +43,21 @@ theme.addEventListener("change", e => {
   if (themeSelected === "js puns") {
     re = /puns/i;
     defaultColor = colorsChildren[0];
-    defaultColor.selected = true;
+    defaultColor.selected = true; // set the displayed color to the first of the "js puns" colors
     setShirtColors(re);
   } else if (themeSelected === "heart js") {
     re = /JS shirt/i;
     defaultColor = colorsChildren[3];
-    defaultColor.selected = true;
+    defaultColor.selected = true; // set the displayed color to the first of the "heart js" colors
     setShirtColors(re);
   } else {
-    shirtColors.classList.add("is-hidden"); // re-hide the "color" label and menu
+    shirtColors.classList.add("is-hidden"); // re-hide the "color" label and menu if is was displayed
   }
   //
   function setShirtColors(regex) {
-    shirtColors.classList.remove("is-hidden");
+    shirtColors.classList.remove("is-hidden"); // unhide the "color" label and menu
+    // loop over the <option> elements that are the shirt colors,
+    // each time unhide it, then hide it if the regex that has been passed in does not match it's text
     for (let i = 0; i < colorsChildren.length; i++) {
       colorsChildren[i].classList.remove("is-hidden");
       let childText = colorsChildren[i].text;
