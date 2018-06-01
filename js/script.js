@@ -69,7 +69,6 @@ theme.addEventListener("change", e => {
 });
 
 // "REGISTER FOR ACTIVITIES" SECTION
-
 const activities = document.querySelector(".activities");
 activities.addEventListener("change", e => {
   let cost = 0; // variable to track the total cost
@@ -90,9 +89,9 @@ activities.addEventListener("change", e => {
     if (act.className === "selected") {
       cost += parseInt(costofActivity(act)); // pass the activity to the function 'cost OfActivity'
       //
-      console.log(cost);
     }
   }
+  console.log(cost);
 
   function costofActivity(activity) {
     const re = /\$(\d+)/; // regexp to capture the value of the activity
