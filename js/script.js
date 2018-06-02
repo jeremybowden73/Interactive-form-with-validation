@@ -170,3 +170,25 @@ activities.addEventListener("change", e => {
     allActivities[val].firstElementChild.disabled = box;
   }
 });
+
+//
+// "PAYMENT INFO" SECTION
+let paymentOption = document.getElementById("payment"); // select the <select> element with id="payment"
+// event listener for the "payment" dropdown
+paymentOption.addEventListener("change", e => {
+  let paymentOptionSelected = e.target.value;
+  let paymentSelect = e.target;
+  let paymentFieldset = paymentSelect.parentNode.children;
+  //
+  // hide all the payment option divs, then unhide the one that triggered this event handler
+  for (let i = 3; i < paymentFieldset.length; i++) {
+    paymentFieldset[i].classList.add("is-hidden");
+  }
+  if (paymentOptionSelected === "credit card") {
+    paymentFieldset[3].classList.remove("is-hidden");
+  } else if (paymentOptionSelected === "paypal") {
+    paymentFieldset[4].classList.remove("is-hidden");
+  } else if (paymentOptionSelected === "bitcoin") {
+    paymentFieldset[5].classList.remove("is-hidden");
+  }
+});
