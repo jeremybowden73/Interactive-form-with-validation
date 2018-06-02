@@ -192,3 +192,10 @@ paymentOption.addEventListener("change", e => {
     paymentFieldset[5].classList.remove("is-hidden");
   }
 });
+
+//
+// "FORM VALIDATION"
+const form = document.querySelector("form");
+form.addEventListener("submit", e => {
+  e.preventDefault(); // prevent page refresh on submission
+});
