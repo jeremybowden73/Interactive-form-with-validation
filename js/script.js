@@ -86,30 +86,35 @@ activities.addEventListener("change", e => {
   const allActivities = activities.children;
   const checkboxChecked = checkbox.checked; // true or false
   // depending on whether the checkbox was checked or unchecked, update the label's class and + or - the cost from the total cost
+  //
+  activityLabel.id = "trigger"; // add id to identify this activity triggered the handler
+  const justClickedActivity = document.getElementById("trigger"); // select the activity that triggered the handler
+
+  // call function to find the index of the "trigger" activity in the list of activites
+  const triggerIndex = getTriggerIndex(justClickedActivity);
+
+  document.getElementById("trigger").removeAttribute("id"); // remove the "trigger" id from the activity
+
+  let index;
+  if (
+    triggerIndex === 2 ||
+    triggerIndex === 3 ||
+    triggerIndex === 4 ||
+    triggerIndex === 5
+  ) {
+    index = triggerIndex;
+  }
+
+  //
   if (checkboxChecked) {
     activityLabel.className = "selected"; // add class to identify when selected
-    activityLabel.id = "trigger"; // add id to identify this activity triggered the handler
-    const justClickedActivity = document.getElementById("trigger"); // select the activity that triggered the handler
-
-    // call function to find the index of the "trigger" activity in the list of activites
-    const triggerIndex = getTriggerIndex(justClickedActivity);
-
-    document.getElementById("trigger").removeAttribute("id"); // remove the "trigger" id from the activity
-
-    if (
-      triggerIndex === 2 ||
-      triggerIndex === 3 ||
-      triggerIndex === 4 ||
-      triggerIndex === 5
-    ) {
-      makeActivityUnavailable(triggerIndex);
-    }
-
+    makeActivityUnavailable(index);
     cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'cost OfActivity'
     costValue.textContent = cost;
     costStatement.classList.remove("is-hidden");
   } else {
     activityLabel.className = "";
+    makeActivityAvailable(index);
     cost -= parseInt(costofActivity(activityLabel));
     costValue.textContent = cost;
     // hide the total cost statement if value is 0
@@ -144,7 +149,7 @@ activities.addEventListener("change", e => {
       const activityToGray = 5;
       fadeToGray(activityToGray);
     }
-
+    // function to "gray out" the clashing activity
     function fadeToGray(val) {
       console.log(allActivities[val]);
       allActivities[val].style.color = "gray";
@@ -161,7 +166,7 @@ activities.addEventListener("change", e => {
       const activityToBlack = 5;
       fadeToBlack(activityToBlack);
     }
-
+    // function to return a "grayed out" activity to "black"
     function fadeToBlack(val) {
       console.log(allActivities[val]);
       allActivities[val].style.color = "black";
