@@ -1,26 +1,23 @@
-// select all elements with class="hideIfJavaScriptEnabled"
-const hideIfJavaScriptEnabled = document.getElementsByClassName(
-  "hideIfJavaScriptEnabled"
-);
-// hide them all by setting display to "none"
-Array.prototype.forEach.call(hideIfJavaScriptEnabled, function(eachElement) {
-  eachElement.classList.add("is-hidden");
-});
-
 // SET FOCUS ON THE FIRST TEXT FIELD
 // on page load, set focus on the first text field
 const initialFocus = document.getElementById("name");
 initialFocus.focus();
 
 // "JOB ROLE" SECTION
+// hide the "other job role" field upon page load with JS enabled
+const otherJobRoleForm = document
+  .getElementsByTagName("fieldset")[0]
+  .querySelectorAll("input")[2];
+otherJobRoleForm.classList.add("is-hidden");
+//
 // reveal text field 'Your Job Role' when "Other" option is selected
 let jobTitle = document.getElementById("title");
 jobTitle.addEventListener("change", e => {
   let jobRole = e.target.value;
   if (jobRole === "other") {
-    hideIfJavaScriptEnabled[0].classList.remove("is-hidden"); // unhide the 0th element in the array, i.e. the 'Your Job Role' text field
-    hideIfJavaScriptEnabled[0].id = "other-title"; // add an id attribute to the text field
-    hideIfJavaScriptEnabled[0].placeholder = "Your Job Role"; // replace default placeholder with new text
+    otherJobRoleForm.classList.remove("is-hidden"); // unhide the 0th element in the array, i.e. the 'Your Job Role' text field
+    otherJobRoleForm.id = "other-title"; // add an id attribute to the text field
+    otherJobRoleForm.placeholder = "Your Job Role"; // replace default placeholder with new text
   }
 });
 
@@ -173,7 +170,16 @@ activities.addEventListener("change", e => {
 
 //
 // "PAYMENT INFO" SECTION
-let paymentOption = document.getElementById("payment"); // select the <select> element with id="payment"
+const paymentOption = document.getElementById("payment"); // select the <select> element with id="payment"
+// hide the paypal and bitcoin divs upon page load with JS enabled
+const Fieldset = paymentOption.parentNode;
+console.log(Fieldset);
+const bitcoinDiv = Fieldset.lastElementChild;
+const paypalDiv = bitcoinDiv.previousElementSibling;
+bitcoinDiv.classList.add("is-hidden");
+paypalDiv.classList.add("is-hidden");
+
+//
 // event listener for the "payment" dropdown
 paymentOption.addEventListener("change", e => {
   let paymentOptionSelected = e.target.value;
