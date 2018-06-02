@@ -33,7 +33,9 @@ let colorsChildren = colors.children;
 let defaultColor; // for the shirt color dropdown
 //
 let theme = document.getElementById("design"); // select the <select> element with id="design"
-let re = new RegExp("");
+let re = new RegExp(""); // create an empty regex variable
+//
+// event listener for the "design" dropdown
 theme.addEventListener("change", e => {
   let themeSelected = e.target.value;
   if (themeSelected === "js puns") {
@@ -85,7 +87,21 @@ activities.addEventListener("change", e => {
   const checkboxChecked = checkbox.checked; // true or false
   // depending on whether the checkbox was checked or unchecked, update the label's class and + or - the cost from the total cost
   if (checkboxChecked) {
-    activityLabel.className = "selected";
+    activityLabel.className = "selected"; // add class to identify when selected
+    activityLabel.id = "trigger"; // add id to identify this activity triggered the handler
+    const justClickedActivity = document.getElementById("trigger"); // select the activity that triggered the handler
+
+    // create a variable that is the index of the trigger activity in the list of activites
+    const index = Array.prototype.indexOf.call(
+      allActivities,
+      justClickedActivity
+    );
+    document.getElementById("trigger").removeAttribute("id"); // remove the "trigger" id from the activity
+
+    if (index === 2 || index === 3 || index === 4 || index === 5) {
+      makeActivityUnavailable(index);
+    }
+
     cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'cost OfActivity'
     costValue.textContent = cost;
     costStatement.classList.remove("is-hidden");
@@ -98,12 +114,21 @@ activities.addEventListener("change", e => {
       costStatement.classList.add("is-hidden");
     }
   }
-
+  //
   // function to search the text content of an activity for a regex of the format $xxx
   function costofActivity(activity) {
     const re = /\$(\d+)/; // regexp to capture the value after the $
     const str = activity.textContent;
     const cost = re.exec(str);
     return cost[1]; // return the captured value
+  }
+  //
+  // function to make an activity unavailable
+  function makeActivityUnavailable(index) {
+    if (index === 2) {
+      console.log(allActivities[4]);
+      allActivities[4].style.color = "gray";
+      allActivities[4].firstElementChild.disabled = true;
+    }
   }
 });
