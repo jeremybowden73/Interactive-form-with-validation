@@ -69,9 +69,9 @@ theme.addEventListener("change", e => {
 });
 
 // "REGISTER FOR ACTIVITIES" SECTION
+let cost = 0; // variable to track the total cost
 const activities = document.querySelector(".activities");
 activities.addEventListener("change", e => {
-  let cost = 0; // variable to track the total cost
   const checkbox = e.target; // target the selected checkbox
   const activityLabel = checkbox.parentNode; // select the <label> parent of the checkbox
   const allActivities = activities.children;
@@ -79,25 +79,18 @@ activities.addEventListener("change", e => {
   // update the label's class depending on whether it's checkbox is checked or not
   if (checkboxChecked) {
     activityLabel.className = "selected";
+    cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'cost OfActivity'
   } else {
     activityLabel.className = "";
-  }
-  //
-  // loop over the activity labels, summing the cost of the courses
-  for (let j = 0; j < allActivities.length; j++) {
-    let act = allActivities[j];
-    if (act.className === "selected") {
-      cost += parseInt(costofActivity(act)); // pass the activity to the function 'cost OfActivity'
-      //
-    }
+    cost -= parseInt(costofActivity(activityLabel));
   }
   console.log(cost);
 
   function costofActivity(activity) {
-    const re = /\$(\d+)/; // regexp to capture the value of the activity
+    // function to search the text content of an activity for a regex of the format $xxx
+    const re = /\$(\d+)/; // regexp to capture the value after the $
     const str = activity.textContent;
     const cost = re.exec(str);
-    //console.log(cost[1]);
-    return cost[1];
+    return cost[1]; // return the captured value
   }
 });
