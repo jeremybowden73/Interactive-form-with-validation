@@ -91,15 +91,18 @@ activities.addEventListener("change", e => {
     activityLabel.id = "trigger"; // add id to identify this activity triggered the handler
     const justClickedActivity = document.getElementById("trigger"); // select the activity that triggered the handler
 
-    // create a variable that is the index of the trigger activity in the list of activites
-    const index = Array.prototype.indexOf.call(
-      allActivities,
-      justClickedActivity
-    );
+    // call function to find the index of the "trigger" activity in the list of activites
+    const triggerIndex = getTriggerIndex(justClickedActivity);
+
     document.getElementById("trigger").removeAttribute("id"); // remove the "trigger" id from the activity
 
-    if (index === 2 || index === 3 || index === 4 || index === 5) {
-      makeActivityUnavailable(index);
+    if (
+      triggerIndex === 2 ||
+      triggerIndex === 3 ||
+      triggerIndex === 4 ||
+      triggerIndex === 5
+    ) {
+      makeActivityUnavailable(triggerIndex);
     }
 
     cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'cost OfActivity'
@@ -123,12 +126,46 @@ activities.addEventListener("change", e => {
     return cost[1]; // return the captured value
   }
   //
+  // function to return the index of the "trigger" activity in the list of activites
+  function getTriggerIndex(justClickedActivity) {
+    const index = Array.prototype.indexOf.call(
+      allActivities,
+      justClickedActivity
+    );
+    return index;
+  }
+  //
   // function to make an activity unavailable
-  function makeActivityUnavailable(index) {
-    if (index === 2) {
-      console.log(allActivities[4]);
-      allActivities[4].style.color = "gray";
-      allActivities[4].firstElementChild.disabled = true;
+  function makeActivityUnavailable(triggerIndex) {
+    if (triggerIndex === 2) {
+      const activityToGray = 4;
+      fadeToGray(activityToGray);
+    } else if (triggerIndex === 3) {
+      const activityToGray = 5;
+      fadeToGray(activityToGray);
+    }
+
+    function fadeToGray(val) {
+      console.log(allActivities[val]);
+      allActivities[val].style.color = "gray";
+      allActivities[val].firstElementChild.disabled = true;
+    }
+  }
+  //
+  // function to make an activity available
+  function makeActivityAvailable(triggerIndex) {
+    if (triggerIndex === 2) {
+      const activityToBlack = 4;
+      fadeToBlack(activityToBlack);
+    } else if (triggerIndex === 3) {
+      const activityToBlack = 5;
+      fadeToBlack(activityToBlack);
+    }
+
+    function fadeToBlack(val) {
+      console.log(allActivities[val]);
+      allActivities[val].style.color = "black";
+      allActivities[val].firstElementChild.disabled = false;
     }
   }
 });
