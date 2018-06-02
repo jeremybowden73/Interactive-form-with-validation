@@ -96,6 +96,7 @@ activities.addEventListener("change", e => {
   document.getElementById("trigger").removeAttribute("id"); // remove the "trigger" id from the activity
 
   let index;
+  // populate 'index' if the trigger was activites 2, 3, 4, or 5
   if (
     triggerIndex === 2 ||
     triggerIndex === 3 ||
@@ -108,13 +109,13 @@ activities.addEventListener("change", e => {
   //
   if (checkboxChecked) {
     activityLabel.className = "selected"; // add class to identify when selected
-    makeActivityUnavailable(index);
-    cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'cost OfActivity'
+    clashManagement(index, 1); // if any other activities clash with the one selected, make them unavailable
+    cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'cost OfActivity' and update the total cost
     costValue.textContent = cost;
     costStatement.classList.remove("is-hidden");
   } else {
     activityLabel.className = "";
-    makeActivityAvailable(index);
+    clashManagement(index, 0); // make any previously clashing activited available
     cost -= parseInt(costofActivity(activityLabel));
     costValue.textContent = cost;
     // hide the total cost statement if value is 0
@@ -141,30 +142,27 @@ activities.addEventListener("change", e => {
   }
   //
   // function to make an activity unavailable
-  function makeActivityUnavailable(triggerIndex) {
-    if (triggerIndex === 2) {
-      const activityToGray = 4;
-      fadeToGray(activityToGray);
-    } else if (triggerIndex === 3) {
-      const activityToGray = 5;
-      fadeToGray(activityToGray);
+  function clashManagement(index, flag) {
+    if (index === 2) {
+      const activityToChange = 4;
+      if (flag === 1) {
+        fadeToGray(activityToChange);
+      } else {
+        fadeToBlack(activityToChange);
+      }
+    } else if (index === 3) {
+      const activityToChange = 5;
+      if (flag === 1) {
+        fadeToGray(activityToChange);
+      } else {
+        fadeToBlack(activityToChange);
+      }
     }
     // function to "gray out" the clashing activity
     function fadeToGray(val) {
       console.log(allActivities[val]);
       allActivities[val].style.color = "gray";
       allActivities[val].firstElementChild.disabled = true;
-    }
-  }
-  //
-  // function to make an activity available
-  function makeActivityAvailable(triggerIndex) {
-    if (triggerIndex === 2) {
-      const activityToBlack = 4;
-      fadeToBlack(activityToBlack);
-    } else if (triggerIndex === 3) {
-      const activityToBlack = 5;
-      fadeToBlack(activityToBlack);
     }
     // function to return a "grayed out" activity to "black"
     function fadeToBlack(val) {
