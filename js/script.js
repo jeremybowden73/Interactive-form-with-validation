@@ -171,9 +171,17 @@ activities.addEventListener("change", e => {
 //
 // "PAYMENT INFO" SECTION
 const paymentOption = document.getElementById("payment"); // select the <select> element with id="payment"
+
+// set the Select Payment Method option to disabled
+const selPayMeth = paymentOption.querySelectorAll("option")[0];
+selPayMeth.setAttribute("disabled", true);
+// set the Credit Card option to be selected on page load
+const cCard = paymentOption.querySelectorAll("option")[1];
+cCard.setAttribute("selected", true);
+
+//
 // hide the paypal and bitcoin divs upon page load with JS enabled
 const Fieldset = paymentOption.parentNode;
-console.log(Fieldset);
 const bitcoinDiv = Fieldset.lastElementChild;
 const paypalDiv = bitcoinDiv.previousElementSibling;
 bitcoinDiv.classList.add("is-hidden");
