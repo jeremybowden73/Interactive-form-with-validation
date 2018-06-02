@@ -21,10 +21,6 @@ jobTitle.addEventListener("change", e => {
     hideIfJavaScriptEnabled[0].classList.remove("is-hidden"); // unhide the 0th element in the array, i.e. the 'Your Job Role' text field
     hideIfJavaScriptEnabled[0].id = "other-title"; // add an id attribute to the text field
     hideIfJavaScriptEnabled[0].placeholder = "Your Job Role"; // replace default placeholder with new text
-    const kids = jobTitle.children;
-    if (kids[4].text === "Student") {
-      console.log("stuuuudent");
-    }
   }
 });
 
@@ -70,24 +66,41 @@ theme.addEventListener("change", e => {
 
 // "REGISTER FOR ACTIVITIES" SECTION
 let cost = 0; // variable to track the total cost
-const activities = document.querySelector(".activities");
+const activities = document.querySelector(".activities"); // select the 'activities' <fieldset>
+// create a <div> to show the total cost of activies
+let costStatement = document.createElement("div");
+costStatement.classList.add("is-hidden"); // initially hide it
+let costMessage = document.createElement("span");
+let costValue = document.createElement("span");
+costStatement.appendChild(costMessage);
+costStatement.appendChild(costValue);
+costMessage.textContent = "Total cost of activities: $";
+activities.appendChild(costStatement); // add the <div> to the 'activities' <fieldset>
+//
+// event listener for the activity checkboxes. It will add or remove the cost of the activity to the total cost.
 activities.addEventListener("change", e => {
   const checkbox = e.target; // target the selected checkbox
   const activityLabel = checkbox.parentNode; // select the <label> parent of the checkbox
   const allActivities = activities.children;
   const checkboxChecked = checkbox.checked; // true or false
-  // update the label's class depending on whether it's checkbox is checked or not
+  // depending on whether the checkbox was checked or unchecked, update the label's class and + or - the cost from the total cost
   if (checkboxChecked) {
     activityLabel.className = "selected";
     cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'cost OfActivity'
+    costValue.textContent = cost;
+    costStatement.classList.remove("is-hidden");
   } else {
     activityLabel.className = "";
     cost -= parseInt(costofActivity(activityLabel));
+    costValue.textContent = cost;
+    // hide the total cost statement if value is 0
+    if (cost === 0) {
+      costStatement.classList.add("is-hidden");
+    }
   }
-  console.log(cost);
 
+  // function to search the text content of an activity for a regex of the format $xxx
   function costofActivity(activity) {
-    // function to search the text content of an activity for a regex of the format $xxx
     const re = /\$(\d+)/; // regexp to capture the value after the $
     const str = activity.textContent;
     const cost = re.exec(str);
