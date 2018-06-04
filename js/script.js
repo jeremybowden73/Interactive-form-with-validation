@@ -265,7 +265,7 @@ formInput.addEventListener("submit", e => {
     shirtSizeFieldset.insertBefore(shirtErrorMessage, shirtSizeDiv);
     theme.style.border = "2px dotted red";
   }
-  // but if the shirtColorsdiv is NOT "is-hidden" and the error message div is present, it needs to be removed from the DOM
+  // but if the shirtColors div is NOT "is-hidden" and the error message div is present, it needs to be removed from the DOM
   else if (
     shirtColors.className !== "is-hidden" &&
     document.getElementById("shirtErrorMessage")
@@ -273,6 +273,34 @@ formInput.addEventListener("submit", e => {
     const removeErrorMessage = document.getElementById("shirtErrorMessage");
     shirtSizeFieldset.removeChild(removeErrorMessage);
     theme.style.border = "";
+  }
+
+  //
+  // validate at least one Activity has been selected
+  const activityErrorMessage = document.createElement("div"); // create a div for the error message
+  activityErrorMessage.id = "activityErrorMessage"; // identifier
+  activityErrorMessage.style.float = "none"; // styling
+  activityErrorMessage.style.marginBottom = "24px";
+  activityErrorMessage.style.color = "red";
+  activityErrorMessage.textContent =
+    "Don't forget to pick at least one activity!";
+  activityFieldset = document.querySelector("fieldset.activities");
+  activityFirstLabel = activityFieldset.querySelector("label");
+
+  const activitiesLastChild = activities.lastElementChild;
+  if (
+    activitiesLastChild.className === "is-hidden" &&
+    !document.getElementById("activityErrorMessage")
+  ) {
+    activityFieldset.insertBefore(activityErrorMessage, activityFirstLabel);
+  } else if (
+    activitiesLastChild.className !== "is-hidden" &&
+    document.getElementById("activityErrorMessage")
+  ) {
+    const removeActivityErrorMessage = document.getElementById(
+      "activityErrorMessage"
+    );
+    activityFieldset.removeChild(removeActivityErrorMessage);
   }
 
   //
