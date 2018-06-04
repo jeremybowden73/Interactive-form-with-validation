@@ -80,7 +80,9 @@ activities.appendChild(costStatement); // add the <div> to the 'activities' <fie
 activities.addEventListener("change", e => {
   const checkbox = e.target; // target the selected checkbox
   const activityLabel = checkbox.parentNode; // select the <label> parent of the checkbox
-  const allActivities = activities.children;
+  const allActivities = document
+    .querySelector("fieldset.activities")
+    .querySelectorAll("label");
   const checkboxChecked = checkbox.checked; // true or false
   // depending on whether the checkbox was checked or unchecked, update the label's class and + or - the cost from the total cost
   //
@@ -95,10 +97,10 @@ activities.addEventListener("change", e => {
   let index = 0;
   // populate 'index' if the trigger was activites 2, 3, 4, or 5
   if (
+    triggerIndex === 1 ||
     triggerIndex === 2 ||
     triggerIndex === 3 ||
-    triggerIndex === 4 ||
-    triggerIndex === 5
+    triggerIndex === 4
   ) {
     index = triggerIndex;
   }
@@ -145,14 +147,14 @@ activities.addEventListener("change", e => {
   // function to change the appearance of an activity if it clashes with a selected activity, and to return the appearance to normal if the clash is removed by the user
   function clashManagement(index, flag) {
     let activityToChange;
-    if (index === 2) {
+    if (index === 1) {
+      activityToChange = 3;
+    } else if (index === 2) {
       activityToChange = 4;
     } else if (index === 3) {
-      activityToChange = 5;
+      activityToChange = 1;
     } else if (index === 4) {
       activityToChange = 2;
-    } else if (index === 5) {
-      activityToChange = 3;
     }
 
     if (flag === 1) {
