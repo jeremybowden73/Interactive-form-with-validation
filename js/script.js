@@ -217,45 +217,67 @@ formInput.addEventListener("submit", e => {
   e.preventDefault(); // prevent page refresh on submission
   // create consts for form fields to be validated
   const username = document.getElementById("name");
-  const email = document.getElementById("mail").value;
+  const email = document.getElementById("mail");
   const ccNumber = (user_name = document.getElementById("cc-num").value);
   const ccZip = document.getElementById("zip").value;
   const ccCVV = document.getElementById("cvv").value;
 
   // validate username field has been entered correctly
-  const re = /[a-z]/i;
-  if (re.test(username.value)) {
+  const regexUsername = /[a-z]/i;
+  if (regexUsername.test(username.value)) {
     console.log("YES");
-    inputGood(username);
+    inputGood(username, 0);
   } else {
     console.log("NO");
-    inputError(username);
+    inputError(username, 0);
   }
 
-  // regex for email
-  // https://www.regular-expressions.info/email.html
-  // console.log(email);
-  // const emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  // // /^[w-.+]+@[a-zA-Z0-9.-]+.[a-zA-z0-9]{2,4}$/;
-  // if (emailRegEx.test(email)) {
-  //   console.log("YAY");
-  // } else {
-  //   console.log("NOOOO");
-  // }
+  // validate email field has been entered correctly
+  // Regex sourced from https://www.regular-expressions.info/email.html
+  const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  if (regexEmail.test(email.value)) {
+    console.log("YAY");
+    inputGood(email, 1);
+  } else {
+    console.log("NOOOO");
+    inputError(email, 1);
+  }
 
+  //
   // function to change the styling of the label and input elements if erroneous data has been entered
-  function inputError(input) {
+  function inputError(input, value) {
+    input.style.border = "2px dotted red";
     const errorLabel = input.previousElementSibling;
     errorLabel.style.color = "red";
-    errorLabel.textContent =
-      "Please enter a name containing at least one alphanumeric character:";
-    input.style.border = "2px dotted red";
+    // switch statement to determine which error message should be displayed
+    switch (value) {
+      case 0:
+        errorLabel.textContent =
+          "Please enter a name containing at least one alphanumeric character:";
+        break;
+      case 1:
+        errorLabel.textContent = "Please enter a valid email address:";
+        break;
+      default:
+        break;
+    }
   }
 
   // function to set all elements to the default style if the entered data is valid (is case the elements were previously changed due to erroneous input)
-  function inputGood(input) {
+  function inputGood(input, value) {
+    input.style.border = "";
     const label = input.previousElementSibling;
     label.style.color = "";
-    input.style.border = "";
+    // switch statement to determine which label message should be displayed
+    switch (value) {
+      case 0:
+        label.textContent = "Name:";
+        break;
+      case 1:
+        label.textContent = "Email:";
+        break;
+      default:
+        break;
+    }
   }
 });
