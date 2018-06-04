@@ -249,64 +249,51 @@ formInput.addEventListener("submit", e => {
 
   //
   // validate a T-shirt design has been selected
-  const shirtErrorMessage = document.createElement("div"); // create a div for the error message
-  shirtErrorMessage.id = "shirtErrorMessage"; // identifier
-  shirtErrorMessage.style.float = "none"; // styling
-  shirtErrorMessage.style.marginBottom = "24px";
-  shirtErrorMessage.style.color = "red";
-  shirtErrorMessage.textContent =
-    "Don't forget to pick a T-shirt design and color!";
+  const shirtErrorDiv = createErrorMessage("shirt"); // call function to create the error message div
+  //
   const shirtSizeSelect = document.getElementById("size");
   const shirtSizeDiv = shirtSizeSelect.parentNode;
   const shirtSizeFieldset = shirtSizeDiv.parentNode;
   // if the shirtColors div is hidden then no design has been selected, so if the error message div is not already present insert it into the DOM
   if (
     shirtColors.className === "is-hidden" &&
-    !document.getElementById("shirtErrorMessage")
+    !document.getElementById("shirt")
   ) {
-    shirtSizeFieldset.insertBefore(shirtErrorMessage, shirtSizeDiv);
+    shirtSizeFieldset.insertBefore(shirtErrorDiv, shirtSizeDiv);
     theme.style.border = "2px dotted red";
   }
   // but if the shirtColors div is NOT "is-hidden" and the error message div is present, it needs to be removed from the DOM
   else if (
     shirtColors.className !== "is-hidden" &&
-    document.getElementById("shirtErrorMessage")
+    document.getElementById("shirt")
   ) {
-    const removeErrorMessage = document.getElementById("shirtErrorMessage");
+    const removeErrorMessage = document.getElementById("shirt");
     shirtSizeFieldset.removeChild(removeErrorMessage);
     theme.style.border = "";
   }
 
   //
   // validate at least one Activity has been selected
-  const activityErrorMessage = document.createElement("div"); // create a div for the error message
-  activityErrorMessage.id = "activityErrorMessage"; // identifier
-  activityErrorMessage.style.float = "none"; // styling
-  activityErrorMessage.style.marginBottom = "24px";
-  activityErrorMessage.style.color = "red";
-  activityErrorMessage.textContent =
-    "Don't forget to pick at least one activity!";
+  const activityErrorDiv = createErrorMessage("activity"); // call function to create the error message div
+  //
   activityFieldset = document.querySelector("fieldset.activities");
   activityFirstLabel = activityFieldset.querySelector("label");
-
   const activitiesLastChild = activities.lastElementChild;
   if (
     activitiesLastChild.className === "is-hidden" &&
-    !document.getElementById("activityErrorMessage")
+    !document.getElementById("activity")
   ) {
-    activityFieldset.insertBefore(activityErrorMessage, activityFirstLabel);
+    activityFieldset.insertBefore(activityErrorDiv, activityFirstLabel);
   } else if (
     activitiesLastChild.className !== "is-hidden" &&
-    document.getElementById("activityErrorMessage")
+    document.getElementById("activity")
   ) {
-    const removeActivityErrorMessage = document.getElementById(
-      "activityErrorMessage"
-    );
-    activityFieldset.removeChild(removeActivityErrorMessage);
+    const removeActivityErrorDiv = document.getElementById("activity");
+    activityFieldset.removeChild(removeActivityErrorDiv);
   }
 
   //
-  // function to change the styling of the label and input elements if erroneous data has been entered
+  // function to change the styling of text inputs (the label and input elements) if erroneous data has been entered
   function inputError(input, value) {
     input.style.border = "2px dotted red";
     const errorLabel = input.previousElementSibling;
@@ -325,7 +312,7 @@ formInput.addEventListener("submit", e => {
     }
   }
 
-  // function to set the styling of the label and input elements to the default style if the entered data is valid (in case the elements were previously changed due to erroneous input)
+  // function to set the styling of the text inputs (label and input elements) to the default style if the entered data is valid (in case the elements were previously changed due to erroneous input)
   function inputGood(input, value) {
     input.style.border = "";
     const label = input.previousElementSibling;
@@ -341,5 +328,21 @@ formInput.addEventListener("submit", e => {
       default:
         break;
     }
+  }
+
+  // function to create an error message div
+  function createErrorMessage(field) {
+    const errorMessage = document.createElement("div"); // create a div for the error message
+    errorMessage.id = field; // identifier
+    errorMessage.style.float = "none"; // styling
+    errorMessage.style.marginBottom = "24px";
+    errorMessage.style.color = "red";
+    if (field === "shirt") {
+      errorMessage.textContent =
+        "Don't forget to pick a T-shirt design and color!";
+    } else if (field === "activity") {
+      errorMessage.textContent = "Don't forget to pick at least one activity!";
+    }
+    return errorMessage;
   }
 });
