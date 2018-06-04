@@ -209,7 +209,53 @@ paymentOption.addEventListener("change", e => {
 
 //
 // "FORM VALIDATION"
-const form = document.querySelector("form");
-form.addEventListener("submit", e => {
+// disable HTML5 form validation
+const formInput = document.querySelector("form");
+formInput.setAttribute("novalidate", true);
+// create event listener for the form's Submit button
+formInput.addEventListener("submit", e => {
   e.preventDefault(); // prevent page refresh on submission
+  // create consts for form fields to be validated
+  const username = document.getElementById("name");
+  const email = document.getElementById("mail").value;
+  const ccNumber = (user_name = document.getElementById("cc-num").value);
+  const ccZip = document.getElementById("zip").value;
+  const ccCVV = document.getElementById("cvv").value;
+
+  // validate username field has been entered correctly
+  const re = /[a-z]/i;
+  if (re.test(username.value)) {
+    console.log("YES");
+    inputGood(username);
+  } else {
+    console.log("NO");
+    inputError(username);
+  }
+
+  // regex for email
+  // https://www.regular-expressions.info/email.html
+  // console.log(email);
+  // const emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  // // /^[w-.+]+@[a-zA-Z0-9.-]+.[a-zA-z0-9]{2,4}$/;
+  // if (emailRegEx.test(email)) {
+  //   console.log("YAY");
+  // } else {
+  //   console.log("NOOOO");
+  // }
+
+  // function to change the styling of the label and input elements if erroneous data has been entered
+  function inputError(input) {
+    const errorLabel = input.previousElementSibling;
+    errorLabel.style.color = "red";
+    errorLabel.textContent =
+      "Please enter a name containing at least one alphanumeric character:";
+    input.style.border = "2px dotted red";
+  }
+
+  // function to set all elements to the default style if the entered data is valid (is case the elements were previously changed due to erroneous input)
+  function inputGood(input) {
+    const label = input.previousElementSibling;
+    label.style.color = "";
+    input.style.border = "";
+  }
 });
