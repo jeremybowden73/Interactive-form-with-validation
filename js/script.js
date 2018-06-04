@@ -263,6 +263,7 @@ formInput.addEventListener("submit", e => {
     !document.getElementById("shirtErrorMessage")
   ) {
     shirtSizeFieldset.insertBefore(shirtErrorMessage, shirtSizeDiv);
+    theme.style.border = "2px dotted red";
   }
   // but if the shirtColorsdiv is NOT "is-hidden" and the error message div is present, it needs to be removed from the DOM
   else if (
@@ -271,6 +272,7 @@ formInput.addEventListener("submit", e => {
   ) {
     const removeErrorMessage = document.getElementById("shirtErrorMessage");
     shirtSizeFieldset.removeChild(removeErrorMessage);
+    theme.style.border = "";
   }
 
   //
@@ -293,7 +295,7 @@ formInput.addEventListener("submit", e => {
     }
   }
 
-  // function to set all elements to the default style if the entered data is valid (is case the elements were previously changed due to erroneous input)
+  // function to set the styling of the label and input elements to the default style if the entered data is valid (in case the elements were previously changed due to erroneous input)
   function inputGood(input, value) {
     input.style.border = "";
     const label = input.previousElementSibling;
