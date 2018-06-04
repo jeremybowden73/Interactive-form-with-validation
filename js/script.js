@@ -109,7 +109,7 @@ activities.addEventListener("change", e => {
     if (index !== 0) {
       clashManagement(index, 1); // if any other activities clash with the one selected, make them unavailable
     }
-    cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'cost OfActivity' and update the total cost
+    cost += parseInt(costofActivity(activityLabel)); // pass the activity to the function 'costOfActivity' and update the total cost
     costValue.textContent = cost;
     costStatement.classList.remove("is-hidden");
   } else {
@@ -208,7 +208,7 @@ paymentOption.addEventListener("change", e => {
 });
 
 //
-// "FORM VALIDATION"
+// "FORM VALIDATION" SECTION
 // disable HTML5 form validation
 const formInput = document.querySelector("form");
 formInput.setAttribute("novalidate", true);
@@ -222,6 +222,7 @@ formInput.addEventListener("submit", e => {
   const ccZip = document.getElementById("zip").value;
   const ccCVV = document.getElementById("cvv").value;
 
+  //
   // validate username field has been entered correctly
   const regexUsername = /[a-z]/i;
   if (regexUsername.test(username.value)) {
@@ -232,6 +233,7 @@ formInput.addEventListener("submit", e => {
     inputError(username, 0);
   }
 
+  //
   // validate email field has been entered correctly
   // Regex sourced from https://www.regular-expressions.info/email.html
   const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -241,6 +243,34 @@ formInput.addEventListener("submit", e => {
   } else {
     console.log("NOOOO");
     inputError(email, 1);
+  }
+
+  //
+  // validate a T-shirt design has been selected
+  const shirtErrorMessage = document.createElement("div"); // create a div for the error message
+  shirtErrorMessage.id = "shirtErrorMessage"; // identifier
+  shirtErrorMessage.style.float = "none"; // styling
+  shirtErrorMessage.style.marginBottom = "24px";
+  shirtErrorMessage.style.color = "red";
+  shirtErrorMessage.textContent =
+    "Don't forget to pick a T-shirt design and color!";
+  const shirtSizeSelect = document.getElementById("size");
+  const shirtSizeDiv = shirtSizeSelect.parentNode;
+  const shirtSizeFieldset = shirtSizeDiv.parentNode;
+  // if the shirtColors div is hidden then no design has been selected, so if the error message div is not already present insert it into the DOM
+  if (
+    shirtColors.className === "is-hidden" &&
+    !document.getElementById("shirtErrorMessage")
+  ) {
+    shirtSizeFieldset.insertBefore(shirtErrorMessage, shirtSizeDiv);
+  }
+  // but if the shirtColorsdiv is NOT "is-hidden" and the error message div is present, it needs to be removed from the DOM
+  else if (
+    shirtColors.className !== "is-hidden" &&
+    document.getElementById("shirtErrorMessage")
+  ) {
+    const removeErrorMessage = document.getElementById("shirtErrorMessage");
+    shirtSizeFieldset.removeChild(removeErrorMessage);
   }
 
   //
