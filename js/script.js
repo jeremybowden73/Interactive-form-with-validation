@@ -12,22 +12,72 @@ const nameRegex = /[^a-z\s-]/i;
 const nameInput = document.getElementById("name");
 // create listener for input on the Name field
 nameInput.addEventListener("input", nameValueFunction, false);
-// function to check the characters in the Name value match the regex
-// and that the string is between 3 and 20 chars in length
+// function to check that the string is between 3 and 20 chars in length
+// and the characters in the Name value match the regex
 function nameValueFunction() {
   const nameValue = nameInput.value;
   if (nameValue.length < 3) {
-    console.log("min 3 chars please");
+    inputError(nameInput, 2);
   }
   if (nameValue.length > 20) {
-    console.log("max 20 chars please");
+    inputError(nameInput, 3);
   }
-  if (nameRegex.test(nameValue)) {
-    console.log("no way jose");
-  } else {
-    console.log("ok pal");
+  if (nameValue.length >= 3 && nameValue.length <= 20) {
+    if (nameRegex.test(nameValue)) {
+      inputError(nameInput, 4);
+    } else {
+      inputGood(nameInput, 0);
+    }
   }
 }
+
+// function to change the styling of text inputs (the label and input elements) if erroneous data has been entered
+function inputError(input, value) {
+  input.style.border = "2px dotted red";
+  const errorLabel = input.previousElementSibling;
+  errorLabel.style.color = "red";
+  // switch statement to determine which error message should be displayed
+  switch (value) {
+    case 0:
+      errorLabel.textContent =
+        "Please enter a name containing at least one alphanumeric character:";
+      break;
+    case 1:
+      errorLabel.textContent = "Please enter a valid email address:";
+      break;
+    case 2:
+      errorLabel.textContent = "Please enter a minimum of 3 characters:";
+      break;
+    case 3:
+      errorLabel.textContent = "Please enter a maximum of 20 characters:";
+      break;
+    case 4:
+      errorLabel.textContent =
+        "Please enter only alphabetic characters, spaces, or hyphens:";
+      break;
+    default:
+      break;
+  }
+}
+
+// function to set the styling of the text inputs (label and input elements) to the default style if the entered data is valid (in case the elements were previously changed due to erroneous input)
+function inputGood(input, value) {
+  input.style.border = "";
+  const label = input.previousElementSibling;
+  label.style.color = "";
+  // switch statement to determine which label message should be displayed
+  switch (value) {
+    case 0:
+      label.textContent = "Name:";
+      break;
+    case 1:
+      label.textContent = "Email:";
+      break;
+    default:
+      break;
+  }
+}
+
 //
 // "JOB ROLE" SECTION
 // hide the "other job role" field upon page load with JS enabled
@@ -349,7 +399,7 @@ formInput.addEventListener("submit", e => {
   }
 
   // validate the zip code field has been entered correctly
-  //
+
   // create a const from the user input value
   const ccZipVal = ccZip.value;
   // check it is 5 digits; if not create and display an error message
@@ -367,7 +417,7 @@ formInput.addEventListener("submit", e => {
   }
 
   // validate the CVV field has been entered correctly
-  //
+
   // create a const from the user input value
   const ccCVVVal = ccCVV.value;
   // check it is 3 digits; if not create and display an error message
@@ -389,43 +439,6 @@ formInput.addEventListener("submit", e => {
           FUNCTIONS FOR FORM VALIDATION
 
   */
-
-  // function to change the styling of text inputs (the label and input elements) if erroneous data has been entered
-  function inputError(input, value) {
-    input.style.border = "2px dotted red";
-    const errorLabel = input.previousElementSibling;
-    errorLabel.style.color = "red";
-    // switch statement to determine which error message should be displayed
-    switch (value) {
-      case 0:
-        errorLabel.textContent =
-          "Please enter a name containing at least one alphanumeric character:";
-        break;
-      case 1:
-        errorLabel.textContent = "Please enter a valid email address:";
-        break;
-      default:
-        break;
-    }
-  }
-
-  // function to set the styling of the text inputs (label and input elements) to the default style if the entered data is valid (in case the elements were previously changed due to erroneous input)
-  function inputGood(input, value) {
-    input.style.border = "";
-    const label = input.previousElementSibling;
-    label.style.color = "";
-    // switch statement to determine which label message should be displayed
-    switch (value) {
-      case 0:
-        label.textContent = "Name:";
-        break;
-      case 1:
-        label.textContent = "Email:";
-        break;
-      default:
-        break;
-    }
-  }
 
   // function to check if an error message div is already present in the DOM, and if not create it and add it to the DOM
   function checkAndCreateErrorMessage(field) {
