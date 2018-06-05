@@ -289,6 +289,49 @@ formInput.addEventListener("submit", e => {
   }
 
   //
+  // validate the credit card number field has been entered correctly
+  /*
+            CONDITIONAL FORMATTING DEPENDING ON THE ERROR:
+            1. less than 13 characters
+            2. more than 16 characters
+            3. any non-numeric character
+  */
+  // create consts to access the DOM
+  const ccardNumberDiv = ccNumber.parentNode;
+  const ccardDiv = ccardNumberDiv.parentNode;
+
+  // create a const from the user input value
+  const ccNum = ccNumber.value;
+
+  // if the card number length is less than 13 characters create and display an error message
+  if (ccNum.length <= 13) {
+    checkAndCreateErrorMessage("ccardShort");
+  } else {
+    checkAndRemoveErrorMessage("ccardShort");
+  }
+
+  // if the card number length is more than 16 characters create and display an error message
+  if (ccNum.length >= 17) {
+    checkAndCreateErrorMessage("ccardLong");
+  } else {
+    checkAndRemoveErrorMessage("ccardLong");
+  }
+
+  // if the card value contains any non-numeric characters create and display an error message
+  const numericsOnlyRegex = /\D/; // regex for any non-numerics
+  const checkForNumerics = numericsOnlyRegex.test(ccNum);
+  if (checkForNumerics) {
+    checkAndCreateErrorMessage("ccardNumerals");
+  } else {
+    checkAndRemoveErrorMessage("ccardNumerals");
+  }
+
+  /*
+
+          FUNCTIONS FOR FORM VALIDATION
+
+  */
+
   // function to change the styling of text inputs (the label and input elements) if erroneous data has been entered
   function inputError(input, value) {
     input.style.border = "2px dotted red";
@@ -352,48 +395,29 @@ formInput.addEventListener("submit", e => {
       errorMessage.textContent = "Don't forget to pick at least one activity!";
     } else if (field === "ccardNumerals") {
       errorMessage.textContent = "Please enter only numerals 0 to 9";
+    } else if (field === "ccardShort") {
+      errorMessage.textContent =
+        "Card number was too short. Must be 13 to 16 digits.";
+    } else if (field === "ccardLong") {
+      errorMessage.textContent =
+        "Card number was too long. Must be 13 to 16 digits.";
     }
     return errorMessage;
   }
 
-  //
-  // validate the credit card number field has been entered correctly
-  /*
-            CONDITIONAL FORMATTING DEPENDING ON THE ERROR:
-            1. any non-numeric character
-            2. less than 13 characters
-            3. more than 16 characters
-  */
-  // create consts to access the DOM
-  const ccardNumberDiv = ccNumber.parentNode;
-  const ccardDiv = ccardNumberDiv.parentNode;
-
-  // create a const from the user input value
-  const ccNum = ccNumber.value;
-  // if the entered value does not match the Regex, determine if
-  // it is because of condition 1 and/or 2 or 3
-  if (ccNum.length <= 3) {
-    console.log("less than 4 chars");
-  }
-  if (ccNum.length >= 7) {
-    console.log("more than 6 chars");
-  }
-  const numericsOnlyRegex = /\D/; // regex for any non-digit
-  const checkForNumerics = numericsOnlyRegex.test(ccNum);
-  // if the input contains non-digits, add an error message but only
-  // if it is not already present in the DOM
-  if (checkForNumerics) {
-    console.log("found non-digit");
-    if (!document.getElementById("ccardNumerals")) {
-      const ccardNumeralsErrorDiv = createErrorMessage("ccardNumerals"); // call function to create the error message div
-      ccardDiv.insertBefore(ccardNumeralsErrorDiv, ccardNumberDiv);
+  // function to check if an error message div is already present in the DOM, and if not create it and add it to the DOM
+  function checkAndCreateErrorMessage(field) {
+    if (!document.getElementById(field)) {
+      const addDiv = createErrorMessage(field); // call function to create the error message div
+      ccardDiv.insertBefore(addDiv, ccardNumberDiv);
     }
-  } else {
-    // the input contains only digits :-)
-    // if the error message is present from a previous erroneous input, remove it from the DOM
-    if (document.getElementById("ccardNumerals")) {
-      const removeccardNumeralsDiv = document.getElementById("ccardNumerals");
-      ccardDiv.removeChild(removeccardNumeralsDiv);
+  }
+
+  // function to check if an error message div already exists in the DOM, and if so remove it
+  function checkAndRemoveErrorMessage(field) {
+    if (document.getElementById(field)) {
+      const removeDiv = document.getElementById(field);
+      ccardDiv.removeChild(removeDiv);
     }
   }
 });
