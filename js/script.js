@@ -299,24 +299,20 @@ formInput.addEventListener("submit", e => {
   // create consts to access the DOM
   const ccardNumberDiv = ccNumber.parentNode;
   const ccardDiv = ccardNumberDiv.parentNode;
-
   // create a const from the user input value
   const ccNum = ccNumber.value;
-
   // if the card number length is less than 13 characters create and display an error message
   if (ccNum.length <= 13) {
     checkAndCreateErrorMessage("ccardShort");
   } else {
     checkAndRemoveErrorMessage("ccardShort");
   }
-
   // if the card number length is more than 16 characters create and display an error message
   if (ccNum.length >= 17) {
     checkAndCreateErrorMessage("ccardLong");
   } else {
     checkAndRemoveErrorMessage("ccardLong");
   }
-
   // if the card value contains any non-numeric characters create and display an error message
   const numericsOnlyRegex = /\D/; // regex for any non-numerics
   const checkForNumerics = numericsOnlyRegex.test(ccNum);
@@ -326,6 +322,42 @@ formInput.addEventListener("submit", e => {
     checkAndRemoveErrorMessage("ccardNumerals");
   }
 
+  // validate the zip code field has been entered correctly
+  //
+  // create a const from the user input value
+  const ccZipVal = ccZip.value;
+  // check it is 5 digits; if not create and display an error message
+  if (ccZipVal.length !== 5) {
+    checkAndCreateErrorMessage("ccardZipLength");
+  } else {
+    checkAndRemoveErrorMessage("ccardZipLength");
+  }
+  // check if the zip code contains any non-numeric characters
+  const checkZipForNumerics = numericsOnlyRegex.test(ccZipVal);
+  if (checkZipForNumerics) {
+    checkAndCreateErrorMessage("ccardZipNumerals");
+  } else {
+    checkAndRemoveErrorMessage("ccardZipNumerals");
+  }
+
+  // validate the CVV field has been entered correctly
+  //
+  // create a const from the user input value
+  const ccCVVVal = ccCVV.value;
+  // check it is 3 digits; if not create and display an error message
+  if (ccCVVVal.length !== 3) {
+    checkAndCreateErrorMessage("ccardCVVLength");
+  } else {
+    checkAndRemoveErrorMessage("ccardCVVLength");
+  }
+  // check if the zip code contains any non-numeric characters
+  const checkCVVForNumerics = numericsOnlyRegex.test(ccCVVVal);
+  if (checkCVVForNumerics) {
+    checkAndCreateErrorMessage("ccardCVVNumerals");
+  } else {
+    checkAndRemoveErrorMessage("ccardCVVNumerals");
+  }
+  //
   /*
 
           FUNCTIONS FOR FORM VALIDATION
@@ -346,12 +378,6 @@ formInput.addEventListener("submit", e => {
       case 1:
         errorLabel.textContent = "Please enter a valid email address:";
         break;
-      case 2:
-        errorLabel.textContent = "Too short! Must be 13 to 16 digits:";
-        break;
-      case 3:
-        errorLabel.textContent = "Too long! Must be 13 to 16 digits:";
-        break;
       default:
         break;
     }
@@ -370,39 +396,9 @@ formInput.addEventListener("submit", e => {
       case 1:
         label.textContent = "Email:";
         break;
-      case 2:
-        label.textContent = "Card Number:";
-        break;
-      case 3:
-        label.textContent = "Card Number:";
-        break;
       default:
         break;
     }
-  }
-
-  // function to create an error message div
-  function createErrorMessage(field) {
-    const errorMessage = document.createElement("div"); // create a div for the error message
-    errorMessage.id = field; // identifier
-    errorMessage.style.float = "none"; // styling
-    errorMessage.style.marginBottom = "24px";
-    errorMessage.style.color = "red";
-    if (field === "shirt") {
-      errorMessage.textContent =
-        "Don't forget to pick a T-shirt design and color!";
-    } else if (field === "activity") {
-      errorMessage.textContent = "Don't forget to pick at least one activity!";
-    } else if (field === "ccardNumerals") {
-      errorMessage.textContent = "Please enter only numerals 0 to 9";
-    } else if (field === "ccardShort") {
-      errorMessage.textContent =
-        "Card number was too short. Must be 13 to 16 digits.";
-    } else if (field === "ccardLong") {
-      errorMessage.textContent =
-        "Card number was too long. Must be 13 to 16 digits.";
-    }
-    return errorMessage;
   }
 
   // function to check if an error message div is already present in the DOM, and if not create it and add it to the DOM
@@ -419,5 +415,38 @@ formInput.addEventListener("submit", e => {
       const removeDiv = document.getElementById(field);
       ccardDiv.removeChild(removeDiv);
     }
+  }
+
+  // function to create an error message div
+  function createErrorMessage(field) {
+    const errorMessage = document.createElement("div"); // create a div for the error message
+    errorMessage.id = field; // identifier
+    errorMessage.style.float = "none"; // styling
+    errorMessage.style.marginBottom = "24px";
+    errorMessage.style.color = "red";
+    if (field === "shirt") {
+      errorMessage.textContent =
+        "Don't forget to pick a T-shirt design and color!";
+    } else if (field === "activity") {
+      errorMessage.textContent = "Don't forget to pick at least one activity!";
+    } else if (field === "ccardNumerals") {
+      errorMessage.textContent =
+        "Card Number: Please enter only numerals 0 to 9";
+    } else if (field === "ccardShort") {
+      errorMessage.textContent =
+        "Card Number was too short. Must be 13 to 16 digits.";
+    } else if (field === "ccardLong") {
+      errorMessage.textContent =
+        "Card Number was too long. Must be 13 to 16 digits.";
+    } else if (field === "ccardZipLength") {
+      errorMessage.textContent = "Zip Code must be 5 digits.";
+    } else if (field === "ccardZipNumerals") {
+      errorMessage.textContent = "Zip Code: Please enter only numerals 0 to 9";
+    } else if (field === "ccardCVVLength") {
+      errorMessage.textContent = "CVV must be 3 digits.";
+    } else if (field === "ccardCVVNumerals") {
+      errorMessage.textContent = "CVV: Please enter only numerals 0 to 9";
+    }
+    return errorMessage;
   }
 });
