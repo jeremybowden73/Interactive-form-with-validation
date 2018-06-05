@@ -220,18 +220,16 @@ formInput.addEventListener("submit", e => {
   // create consts for form fields to be validated
   const username = document.getElementById("name");
   const email = document.getElementById("mail");
-  const ccNumber = (user_name = document.getElementById("cc-num").value);
-  const ccZip = document.getElementById("zip").value;
-  const ccCVV = document.getElementById("cvv").value;
+  const ccNumber = document.getElementById("cc-num");
+  const ccZip = document.getElementById("zip");
+  const ccCVV = document.getElementById("cvv");
 
   //
   // validate username field has been entered correctly
   const regexUsername = /[a-z]/i;
   if (regexUsername.test(username.value)) {
-    console.log("YES");
     inputGood(username, 0);
   } else {
-    console.log("NO");
     inputError(username, 0);
   }
 
@@ -240,10 +238,8 @@ formInput.addEventListener("submit", e => {
   // Regex sourced from https://www.regular-expressions.info/email.html
   const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   if (regexEmail.test(email.value)) {
-    console.log("YAY");
     inputGood(email, 1);
   } else {
-    console.log("NOOOO");
     inputError(email, 1);
   }
 
@@ -307,6 +303,12 @@ formInput.addEventListener("submit", e => {
       case 1:
         errorLabel.textContent = "Please enter a valid email address:";
         break;
+      case 2:
+        errorLabel.textContent = "Too short! Must be 13 to 16 digits:";
+        break;
+      case 3:
+        errorLabel.textContent = "Too long! Must be 13 to 16 digits:";
+        break;
       default:
         break;
     }
@@ -324,6 +326,12 @@ formInput.addEventListener("submit", e => {
         break;
       case 1:
         label.textContent = "Email:";
+        break;
+      case 2:
+        label.textContent = "Card Number:";
+        break;
+      case 3:
+        label.textContent = "Card Number:";
         break;
       default:
         break;
@@ -344,5 +352,39 @@ formInput.addEventListener("submit", e => {
       errorMessage.textContent = "Don't forget to pick at least one activity!";
     }
     return errorMessage;
+  }
+
+  //
+  // validate the credit card number field has been entered correctly
+  /*
+            CONDITIONAL FORMATTING DEPENDING ON THE ERROR:
+            1. any non-numeric character
+            2. less than 13 characters
+            3. more than 16 characters
+  */
+  const ccNum = ccNumber.value;
+  const ccNumRegex = /^\d{4,6}(?!.)/; // regex matches 13 to 16 numbers at the start of the input
+  const ccNumResult = ccNumRegex.test(ccNum);
+  // if the entered value does not match the Regex, determine if
+  // it is because of condition 1 and/or 2 or 3
+
+  if (ccNumResult === false) {
+    console.log("CC ERROR");
+    if (ccNum.length <= 3) {
+      console.log("less than 4 chars");
+      inputError(ccNumber, 2);
+    }
+    if (ccNum.length >= 7) {
+      console.log("more than 6 chars");
+      inputError(ccNumber, 3);
+    }
+    const numericsOnlyRegex = /\D/;
+    const checkForNumerics = numericsOnlyRegex.test(ccNum);
+    if (checkForNumerics) {
+      console.log("found non-digit");
+    }
+  } else {
+    inputGood(ccNumber, 2);
+    inputGood(ccNumber, 3);
   }
 });
