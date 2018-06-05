@@ -91,9 +91,11 @@ let jobTitle = document.getElementById("title");
 jobTitle.addEventListener("change", e => {
   let jobRole = e.target.value;
   if (jobRole === "other") {
-    otherJobRoleForm.classList.remove("is-hidden"); // unhide the 0th element in the array, i.e. the 'Your Job Role' text field
+    otherJobRoleForm.classList.remove("is-hidden"); // unhide the 'Your Job Role' text field
     otherJobRoleForm.id = "other-title"; // add an id attribute to the text field
     otherJobRoleForm.placeholder = "Your Job Role"; // replace default placeholder with new text
+  } else {
+    otherJobRoleForm.classList.add("is-hidden"); // hide the 'Your Job Role' text field if "Other" wasn't selected
   }
 });
 
@@ -132,7 +134,7 @@ theme.addEventListener("change", e => {
     for (let i = 0; i < colorsChildren.length; i++) {
       colorsChildren[i].classList.remove("is-hidden");
       let childText = colorsChildren[i].text;
-      if (childText.search(regex) < 0) {
+      if (!regex.test(childText)) {
         colorsChildren[i].classList.add("is-hidden");
       }
     }
