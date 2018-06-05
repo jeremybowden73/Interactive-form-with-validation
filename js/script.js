@@ -4,22 +4,21 @@ const initialFocus = document.getElementById("name");
 initialFocus.focus();
 
 //
-// add Real-Time error messages to the Name field
+// add Real-Time validation to the Name field
 //
-// create regex's for allowable characters
+// create regexs for allowable characters
 // (alphabetic characters, hyphens and whitespace)
 const alphaRegex = /[a-z]/i;
 const hyphenRegex = /-/;
 const whitespaceRegex = /\s/;
 // create keypress event listener on the "Name" input field
-document
-  .getElementById("name")
-  .addEventListener("keypress", keyPressFunction, false);
+const nameInput = document.getElementById("name");
+nameInput.addEventListener("keypress", keyPressFunction, false);
 // function to check the key char entered is allowed and
 // that the string is between 3 and 20 chars in length
 function keyPressFunction(e) {
   const keyName = e.key; // select the key pressed by the user
-  const nameInput = document.getElementById("name");
+  //const nameInput = document.getElementById("name");
   const nameValue = nameInput.value;
   if (nameValue.length <= 1) {
     console.log("min 3 chars please");
@@ -32,10 +31,12 @@ function keyPressFunction(e) {
     !hyphenRegex.test(keyName) &&
     !whitespaceRegex.test(keyName)
   ) {
-    console.log("yay");
+    console.log("no way jose");
+  } else {
+    console.log("ok pal");
   }
 }
-
+//
 // "JOB ROLE" SECTION
 // hide the "other job role" field upon page load with JS enabled
 const otherJobRoleForm = document
