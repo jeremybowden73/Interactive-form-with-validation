@@ -6,31 +6,23 @@ initialFocus.focus();
 //
 // add Real-Time validation to the Name field
 //
-// create regexs for allowable characters
-// (alphabetic characters, hyphens and whitespace)
-const alphaRegex = /[a-z]/i;
-const hyphenRegex = /-/;
-const whitespaceRegex = /\s/;
-// create keypress event listener on the "Name" input field
+// create regex for allowable characters
+// (alphabetic characters, hyphens and whitespaces)
+const nameRegex = /[^a-z\s-]/i;
 const nameInput = document.getElementById("name");
-nameInput.addEventListener("keypress", keyPressFunction, false);
-// function to check the key char entered is allowed and
-// that the string is between 3 and 20 chars in length
-function keyPressFunction(e) {
-  const keyName = e.key; // select the key pressed by the user
-  //const nameInput = document.getElementById("name");
+// create listener for input on the Name field
+nameInput.addEventListener("input", nameValueFunction, false);
+// function to check the characters in the Name value match the regex
+// and that the string is between 3 and 20 chars in length
+function nameValueFunction() {
   const nameValue = nameInput.value;
-  if (nameValue.length <= 1) {
+  if (nameValue.length < 3) {
     console.log("min 3 chars please");
   }
-  if (nameValue.length >= 20) {
+  if (nameValue.length > 20) {
     console.log("max 20 chars please");
   }
-  if (
-    !alphaRegex.test(keyName) &&
-    !hyphenRegex.test(keyName) &&
-    !whitespaceRegex.test(keyName)
-  ) {
+  if (nameRegex.test(nameValue)) {
     console.log("no way jose");
   } else {
     console.log("ok pal");
