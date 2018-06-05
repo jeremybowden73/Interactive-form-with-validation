@@ -3,6 +3,39 @@
 const initialFocus = document.getElementById("name");
 initialFocus.focus();
 
+//
+// add Real-Time error messages to the Name field
+//
+// create regex's for allowable characters
+// (alphabetic characters, hyphens and whitespace)
+const alphaRegex = /[a-z]/i;
+const hyphenRegex = /-/;
+const whitespaceRegex = /\s/;
+// create keypress event listener on the "Name" input field
+document
+  .getElementById("name")
+  .addEventListener("keypress", keyPressFunction, false);
+// function to check the key char entered is allowed and
+// that the string is between 3 and 20 chars in length
+function keyPressFunction(e) {
+  const keyName = e.key; // select the key pressed by the user
+  const nameInput = document.getElementById("name");
+  const nameValue = nameInput.value;
+  if (nameValue.length <= 1) {
+    console.log("min 3 chars please");
+  }
+  if (nameValue.length >= 20) {
+    console.log("max 20 chars please");
+  }
+  if (
+    !alphaRegex.test(keyName) &&
+    !hyphenRegex.test(keyName) &&
+    !whitespaceRegex.test(keyName)
+  ) {
+    console.log("yay");
+  }
+}
+
 // "JOB ROLE" SECTION
 // hide the "other job role" field upon page load with JS enabled
 const otherJobRoleForm = document
@@ -302,7 +335,7 @@ formInput.addEventListener("submit", e => {
   // create a const from the user input value
   const ccNum = ccNumber.value;
   // if the card number length is less than 13 characters create and display an error message
-  if (ccNum.length <= 13) {
+  if (ccNum.length <= 12) {
     checkAndCreateErrorMessage("ccardShort");
   } else {
     checkAndRemoveErrorMessage("ccardShort");
