@@ -249,7 +249,7 @@ formInput.addEventListener("submit", e => {
   //
   const shirtSizeSelect = document.getElementById("size");
   const shirtSizeDiv = shirtSizeSelect.parentNode;
-  const shirtSizeFieldset = shirtSizeDiv.parentNode;
+  const shirtSizeFieldset = document.querySelector("fieldset.shirt");
   // if the shirtColors div is hidden then no design has been selected, so if the error message div is not already present insert it into the DOM
   if (
     shirtColors.className === "is-hidden" &&
@@ -350,6 +350,8 @@ formInput.addEventListener("submit", e => {
         "Don't forget to pick a T-shirt design and color!";
     } else if (field === "activity") {
       errorMessage.textContent = "Don't forget to pick at least one activity!";
+    } else if (field === "ccardNumerals") {
+      errorMessage.textContent = "Please enter only numerals 0 to 9";
     }
     return errorMessage;
   }
@@ -362,29 +364,36 @@ formInput.addEventListener("submit", e => {
             2. less than 13 characters
             3. more than 16 characters
   */
+  // create consts to access the DOM
+  const ccardNumberDiv = ccNumber.parentNode;
+  const ccardDiv = ccardNumberDiv.parentNode;
+
+  // create a const from the user input value
   const ccNum = ccNumber.value;
-  const ccNumRegex = /^\d{4,6}(?!.)/; // regex matches 13 to 16 numbers at the start of the input
-  const ccNumResult = ccNumRegex.test(ccNum);
   // if the entered value does not match the Regex, determine if
   // it is because of condition 1 and/or 2 or 3
-
-  if (ccNumResult === false) {
-    console.log("CC ERROR");
-    if (ccNum.length <= 3) {
-      console.log("less than 4 chars");
-      inputError(ccNumber, 2);
-    }
-    if (ccNum.length >= 7) {
-      console.log("more than 6 chars");
-      inputError(ccNumber, 3);
-    }
-    const numericsOnlyRegex = /\D/;
-    const checkForNumerics = numericsOnlyRegex.test(ccNum);
-    if (checkForNumerics) {
-      console.log("found non-digit");
+  if (ccNum.length <= 3) {
+    console.log("less than 4 chars");
+  }
+  if (ccNum.length >= 7) {
+    console.log("more than 6 chars");
+  }
+  const numericsOnlyRegex = /\D/; // regex for any non-digit
+  const checkForNumerics = numericsOnlyRegex.test(ccNum);
+  // if the input contains non-digits, add an error message but only
+  // if it is not already present in the DOM
+  if (checkForNumerics) {
+    console.log("found non-digit");
+    if (!document.getElementById("ccardNumerals")) {
+      const ccardNumeralsErrorDiv = createErrorMessage("ccardNumerals"); // call function to create the error message div
+      ccardDiv.insertBefore(ccardNumeralsErrorDiv, ccardNumberDiv);
     }
   } else {
-    inputGood(ccNumber, 2);
-    inputGood(ccNumber, 3);
+    // the input contains only digits :-)
+    // if the error message is present from a previous erroneous input, remove it from the DOM
+    if (document.getElementById("ccardNumerals")) {
+      const removeccardNumeralsDiv = document.getElementById("ccardNumerals");
+      ccardDiv.removeChild(removeccardNumeralsDiv);
+    }
   }
 });
