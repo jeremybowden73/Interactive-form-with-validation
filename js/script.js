@@ -3,6 +3,7 @@
 const initialFocus = document.getElementById("name");
 initialFocus.focus();
 
+//allOptionElements.style.display = "block";
 //
 // add Real-Time validation to the Name field
 //
@@ -119,23 +120,25 @@ theme.addEventListener("change", e => {
     defaultColor.selected = true; // set the displayed color to the first of the "js puns" colors
     setShirtColors(re);
   } else if (themeSelected === "heart js") {
-    re = /JS shirt/i;
+    re = /I/;
     defaultColor = colorsChildren[3];
     defaultColor.selected = true; // set the displayed color to the first of the "heart js" colors
     setShirtColors(re);
   } else {
     shirtColors.classList.add("is-hidden"); // re-hide the "color" label and menu if is was displayed
   }
-  //
+  ///
   function setShirtColors(regex) {
     shirtColors.classList.remove("is-hidden"); // unhide the "color" label and menu
     // loop over the <option> elements that are the shirt colors,
     // each time unhide it, then hide it if the regex that has been passed in does not match it's text
     for (let i = 0; i < colorsChildren.length; i++) {
       colorsChildren[i].classList.remove("is-hidden");
+      colorsChildren[i].disabled = false;
       let childText = colorsChildren[i].text;
       if (!regex.test(childText)) {
         colorsChildren[i].classList.add("is-hidden");
+        colorsChildren[i].disabled = true;
       }
     }
   }
