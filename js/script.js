@@ -3,7 +3,6 @@
 const initialFocus = document.getElementById("name");
 initialFocus.focus();
 
-//allOptionElements.style.display = "block";
 //
 // add Real-Time validation to the Name field
 //
@@ -12,11 +11,11 @@ initialFocus.focus();
 const nameRegex = /[^a-z\s-]/i;
 const nameInput = document.getElementById("name");
 // create listener for input on the Name field
-nameInput.addEventListener("input", nameValueFunction, false);
+nameInput.addEventListener("input", nameValueFunc, false);
 // function to check that the string is between 3 and 20 chars in length
 // and the characters in the Name value match the regex
-function nameValueFunction() {
-  const nameValue = nameInput.value;
+function nameValueFunc(event) {
+  const nameValue = (event.target.value);
   if (nameValue.length < 3) {
     inputError(nameInput, 2);
   }
@@ -25,7 +24,7 @@ function nameValueFunction() {
   }
   if (nameValue.length >= 3 && nameValue.length <= 20) {
     if (nameRegex.test(nameValue)) {
-      inputError(nameInput, 4);
+      inputError(nameInput, 0);
     } else {
       inputGood(nameInput, 0);
     }
@@ -41,7 +40,7 @@ function inputError(input, value) {
   switch (value) {
     case 0:
       errorLabel.textContent =
-        "Please enter a name containing at least one alphanumeric character:";
+        "Please enter only alphabetic characters, spaces, or hyphens:";
       break;
     case 1:
       errorLabel.textContent = "Please enter a valid email address:";
@@ -51,10 +50,6 @@ function inputError(input, value) {
       break;
     case 3:
       errorLabel.textContent = "Please enter a maximum of 20 characters:";
-      break;
-    case 4:
-      errorLabel.textContent =
-        "Please enter only alphabetic characters, spaces, or hyphens:";
       break;
     default:
       break;
@@ -131,7 +126,7 @@ theme.addEventListener("change", e => {
   function setShirtColors(regex) {
     shirtColors.classList.remove("is-hidden"); // unhide the "color" label and menu
     // loop over the <option> elements that are the shirt colors,
-    // each time unhide it, then hide it if the regex that has been passed in does not match it's text
+    // each time unhide and enable it, then hide and disable it if the regex that has been passed in does not match it's text
     for (let i = 0; i < colorsChildren.length; i++) {
       colorsChildren[i].classList.remove("is-hidden");
       colorsChildren[i].disabled = false;
@@ -305,13 +300,19 @@ formInput.addEventListener("submit", e => {
   const ccZip = document.getElementById("zip");
   const ccCVV = document.getElementById("cvv");
 
-  //
   // validate username field has been entered correctly
-  const regexUsername = /[a-z]/i;
-  if (regexUsername.test(username.value)) {
-    inputGood(username, 0);
-  } else {
-    inputError(username, 0);
+  if (username.value.length < 3) {
+    inputError(username, 2);
+  }
+  if (username.value.length > 20) {
+    inputError(username, 3);
+  }
+  if (username.value.length >= 3 && username.value.length <= 20) {
+    if (nameRegex.test(username.value)) {
+      inputError(username, 0);
+    } else {
+      inputGood(username, 0);
+    }
   }
 
   //
