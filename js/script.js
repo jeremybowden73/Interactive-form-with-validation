@@ -3,6 +3,11 @@
 const initialFocus = document.getElementById("name");
 initialFocus.focus();
 
+// variable score is used to count how many of the 6 required fields meet
+// the validation requirements. Only if all 6 are met (i.e. score === 6)
+// will the form submit successfully
+let score = 0;
+
 //
 // add Real-Time validation to the Name field
 //
@@ -300,6 +305,11 @@ formInput.addEventListener("submit", e => {
   const ccZip = document.getElementById("zip");
   const ccCVV = document.getElementById("cvv");
 
+  score = 0;
+  if (cost > 0) {
+    score += 1;
+  }
+  
   // validate username field has been entered correctly
   if (username.value.length < 3) {
     inputError(username, 2);
@@ -312,8 +322,10 @@ formInput.addEventListener("submit", e => {
       inputError(username, 0);
     } else {
       inputGood(username, 0);
+      score += 1;
     }
   }
+
 
   //
   // validate email field has been entered correctly
@@ -321,10 +333,11 @@ formInput.addEventListener("submit", e => {
   const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   if (regexEmail.test(email.value)) {
     inputGood(email, 1);
+    score += 1;
   } else {
     inputError(email, 1);
   }
-
+  
   //
   // validate a T-shirt design has been selected
   const shirtErrorDiv = createErrorMessage("shirt"); // call function to create the error message div
@@ -404,6 +417,10 @@ formInput.addEventListener("submit", e => {
     checkAndRemoveErrorMessage("ccardNumerals");
   }
 
+  if (ccNum.length >=13 && ccNum.length <=16 && !checkForNumerics) {
+    score += 1;
+  }
+
   // validate the zip code field has been entered correctly
 
   // create a const from the user input value
@@ -422,6 +439,10 @@ formInput.addEventListener("submit", e => {
     checkAndRemoveErrorMessage("ccardZipNumerals");
   }
 
+  if (ccZipVal.length === 5 && !checkZipForNumerics) {
+    score += 1;
+  }
+  
   // validate the CVV field has been entered correctly
 
   // create a const from the user input value
@@ -439,6 +460,18 @@ formInput.addEventListener("submit", e => {
   } else {
     checkAndRemoveErrorMessage("ccardCVVNumerals");
   }
+
+  if (ccCVVVal.length === 3 && !checkCVVForNumerics) {
+    score += 1;
+  }
+
+  if (score === 6) {
+    alert("FORM SUBMITTED, THANKS!!!")
+  } else {
+    alert("Whoops! Please correct the errors on the form. Thanks")
+  }
+  
+
   //
   /*
 
