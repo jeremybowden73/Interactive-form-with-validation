@@ -3,11 +3,15 @@
 const initialFocus = document.getElementById("name");
 initialFocus.focus();
 
-// variable score is used to count how many of the 6 required fields meet
-// the validation requirements. Only if all 6 are met (i.e. score === 6)
-// will the form submit successfully
+// variable score is used to count how many of the 3 required fields
+// (name, email, activity) meet the validation requirements. Only if all 3
+// are met (i.e. score === 3) will the form submit successfully.
+// If credit card is chosen as payment type, scoreRequiredToSubmit will
+// change to 6 because it has 3 additional validation requirements that
+// Paypal and Bitcoin do not
 let score = 0;
-
+let scoreRequiredToSubmit = 6;
+let paymentOptionSelected = "credit-card";
 //
 // add Real-Time validation to the Name field
 //
@@ -273,20 +277,23 @@ paypalDiv.classList.add("is-hidden");
 //
 // event listener for the "payment" dropdown
 paymentOption.addEventListener("change", e => {
-  let paymentOptionSelected = e.target.value;
-  let paymentSelect = e.target;
-  let paymentFieldset = paymentSelect.parentNode.children;
+  paymentOptionSelected = e.target.value;
+  let paymentFieldset = paymentOption.parentNode.children;
   //
   // hide all the payment option divs, then unhide the one that triggered this event handler
+  // and set the value of scoreRequiredToSubmit accordingly
   for (let i = 3; i < paymentFieldset.length; i++) {
     paymentFieldset[i].classList.add("is-hidden");
   }
   if (paymentOptionSelected === "credit card") {
     paymentFieldset[3].classList.remove("is-hidden");
+    scoreRequiredToSubmit = 6;
   } else if (paymentOptionSelected === "paypal") {
     paymentFieldset[4].classList.remove("is-hidden");
+    scoreRequiredToSubmit = 3;
   } else if (paymentOptionSelected === "bitcoin") {
     paymentFieldset[5].classList.remove("is-hidden");
+    scoreRequiredToSubmit = 3;
   }
 });
 
@@ -305,7 +312,9 @@ formInput.addEventListener("submit", e => {
   const ccZip = document.getElementById("zip");
   const ccCVV = document.getElementById("cvv");
 
+  // set the "score", required for form submission, to 0
   score = 0;
+  // if the "activities" field has been validated, update score
   if (cost > 0) {
     score += 1;
   }
@@ -322,7 +331,7 @@ formInput.addEventListener("submit", e => {
       inputError(username, 0);
     } else {
       inputGood(username, 0);
-      score += 1;
+      score += 1; // update score +1 if username is validated
     }
   }
 
@@ -333,7 +342,7 @@ formInput.addEventListener("submit", e => {
   const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   if (regexEmail.test(email.value)) {
     inputGood(email, 1);
-    score += 1;
+    score += 1; // update score +1 if email is validated
   } else {
     inputError(email, 1);
   }
@@ -418,11 +427,10 @@ formInput.addEventListener("submit", e => {
   }
 
   if (ccNum.length >=13 && ccNum.length <=16 && !checkForNumerics) {
-    score += 1;
+    score += 1; // update score +1 if card number is validated
   }
 
   // validate the zip code field has been entered correctly
-
   // create a const from the user input value
   const ccZipVal = ccZip.value;
   // check it is 5 digits; if not create and display an error message
@@ -440,7 +448,7 @@ formInput.addEventListener("submit", e => {
   }
 
   if (ccZipVal.length === 5 && !checkZipForNumerics) {
-    score += 1;
+    score += 1; // update score +1 if card Zip is validated
   }
   
   // validate the CVV field has been entered correctly
@@ -462,15 +470,18 @@ formInput.addEventListener("submit", e => {
   }
 
   if (ccCVVVal.length === 3 && !checkCVVForNumerics) {
-    score += 1;
+    score += 1; // update score +1 if card CVV is validated
   }
 
-  if (score === 6) {
-    alert("FORM SUBMITTED, THANKS!!!")
-  } else {
-    alert("Whoops! Please correct the errors on the form. Thanks")
-  }
+
+  // alert user if there are required fields that have not been validated
+  if (score === scoreRequiredToSubmit) {
+    alert("FORM SUBMITTED, THANKS!!!");
+    } else {
+    alert("Whoops! Please correct the errors on the form. Thanks");
+    }
   
+
 
   //
   /*
