@@ -304,7 +304,6 @@ const formInput = document.querySelector("form");
 formInput.setAttribute("novalidate", true);
 // create event listener for the form's Submit button
 formInput.addEventListener("submit", e => {
-  e.preventDefault(); // prevent page refresh on submission
   // create consts for form fields to be validated
   const username = document.getElementById("name");
   const email = document.getElementById("mail");
@@ -318,7 +317,7 @@ formInput.addEventListener("submit", e => {
   if (cost > 0) {
     score += 1;
   }
-  
+
   // validate username field has been entered correctly
   if (username.value.length < 3) {
     inputError(username, 2);
@@ -346,7 +345,7 @@ formInput.addEventListener("submit", e => {
   } else {
     inputError(email, 1);
   }
-  
+
   //
   // validate a T-shirt design has been selected
   const shirtErrorDiv = createErrorMessage("shirt"); // call function to create the error message div
@@ -426,7 +425,7 @@ formInput.addEventListener("submit", e => {
     checkAndRemoveErrorMessage("ccardNumerals");
   }
 
-  if (ccNum.length >=13 && ccNum.length <=16 && !checkForNumerics) {
+  if (ccNum.length >= 13 && ccNum.length <= 16 && !checkForNumerics) {
     score += 1; // update score +1 if card number is validated
   }
 
@@ -450,7 +449,7 @@ formInput.addEventListener("submit", e => {
   if (ccZipVal.length === 5 && !checkZipForNumerics) {
     score += 1; // update score +1 if card Zip is validated
   }
-  
+
   // validate the CVV field has been entered correctly
 
   // create a const from the user input value
@@ -474,13 +473,15 @@ formInput.addEventListener("submit", e => {
   }
 
 
-  // alert user if there are required fields that have not been validated
+  // if required fields have not been validated, alert the user of the problem and prevent default behaviour (form submission)
+  // otherwise, alert user that the form is submitted and submit the form
   if (score === scoreRequiredToSubmit) {
     alert("FORM SUBMITTED, THANKS!!!");
-    } else {
+  } else {
+    e.preventDefault(); // prevent page refresh on submission
     alert("Whoops! Please correct the errors on the form. Thanks");
-    }
-  
+  }
+
 
 
   //
